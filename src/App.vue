@@ -1,12 +1,27 @@
 <template>
   <div class="template">
-  <TodoList v-bind:todos="filteredTodos"
-  v-on:removeTodo="remove1"
-  v-on:add-Todo="add1"/>
+
+
+    <div class="head">
+      <h1>Список дел </h1>
+      <input v-model="newvalue" type="text" placeholder="Введите новое дело..."><button v-on:click="add" id="button">Сохранить</button>
+    </div>
+    <ul>
+  <TodoList
+      v-for="todo of filteredTodos" :key="todo.id"
+      v-bind:todo="todo"
+      v-on:removeTodo="remove"/>
+    </ul>
+
+
+
+
+
+
   <div class="filter">
-    <a id="all" href="javascript:void(0);" v-on:click="all">Все</a>
-    <a id="not_complete" href="javascript:void(0);" v-on:click="not_complete">Невыполенные</a>
-    <a id="complete" href="javascript:void(0);" v-on:click="complete">Выполненные</a>
+    <a id="all" @click.prevent="all">Все</a>
+    <a id="not_complete" @click.prevent="complete">Невыполенные</a>
+    <a id="complete" @click.prevent="not_complete">Выполненные</a>
   </div>
   </div>
 </template>
@@ -34,22 +49,28 @@ export default {
         return this.todos
       }
       if (this.filter === 'complete') {
-        console.log(this.todos.filter(t => t.IsDone))
-        return this.todos.filter(t => t.IsDone)
-      }
-      if (this.filter === "not_complete") {
         console.log(this.todos.filter(t => !t.IsDone))
         return this.todos.filter(t => !t.IsDone)
+      }
+      if (this.filter === "not_complete") {
+        console.log(this.todos.filter(t => t.IsDone))
+        return this.todos.filter(t => t.IsDone)
       }
   },
   },
   methods: {
-    remove1(id){
-      this.todos = this.todos.filter(t => t.id !== id)
-      //console.log(JSON.stringify(this.todos.id))
-    },
-    add1(newTodo){
+    add() {
+      const newTodo = {
+        id: Date.now(),
+        name: this.newvalue,
+        IsDone: false
+      }
+      let name= JSON.stringify(this.todos).slice(0,JSON.stringify(this.todos).length-1)+','+JSON.stringify(newTodo) + "]"
+      localStorage.setItem("228",name)
       this.todos.push(newTodo)
+    },
+    remove(id){
+      this.todos = this.todos.filter(t => t.id !== id)
     },
     all(){
       this.filter="all"
@@ -59,7 +80,7 @@ export default {
     },
     complete(){
       this.filter="complete"
-    }
+    },
   },
   watch: {
     todos(value){
@@ -81,6 +102,10 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+ul{
+    margin-left: 30vw;
+
 }
 .template {
   background: #3fb984;

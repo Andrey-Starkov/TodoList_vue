@@ -1,6 +1,6 @@
 <template>
-      <li>
-        <div v-bind:class="{done: todo.IsDone}" id = "{{todo.id}}">
+      <li v-bind:class="{done:todo.IsDone}">
+        <div v-bind:class="{done: todo.IsDone}" id = "{{todo.id}}" class="content" >
           <input type="checkbox"
                  v-model="markCompl"
                  v-on:change="markCompleted"
@@ -72,9 +72,11 @@ li{
   border: 1px solid;
   display: flex;
   justify-content: space-between;
-  padding: .5rem 2rem;
+  padding: .8rem 2rem;
   margin-bottom: 1rem;
-  width: 50%;
+  margin-right: 10px;
+  background: #2a9ebd;
+  font-size: 20px;
 }
 input{
   margin-left: 10px;
@@ -84,8 +86,14 @@ ol{
   margin: 0;
   padding: 0;
 }
+
+.content {
+  color: #ffffff;
+}
 .done{
-  text-decoration: line-through;
+
+  color: #000000;
+  background: #6b6363;
 }
 
 </style>
